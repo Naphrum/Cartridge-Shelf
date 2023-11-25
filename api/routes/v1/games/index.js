@@ -1,5 +1,3 @@
-const express = require("express");
+const games = require('./games');
 
-const router = express.Router();
-
-module.exports = router;
+module.exports = games;

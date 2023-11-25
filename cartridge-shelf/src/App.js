@@ -1,12 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import Login from "./components/LogIn";
+import { AppProvider } from "./context/AppContext";
+import { useContext } from "react";
+import AppContext from "./context/AppContext";
+import "./App.css";
+import NavBar from "./components/NavBar/NavBar";
+import Games from "./components/Games";
 
 function App() {
+
+  const { user } = useContext(AppContext);
+
   return (
-    <div className="App">
-      
+    <div>
+      {user ? (
+        <>
+          <NavBar />
+          <Games />
+        </>
+      ) : (
+          <Login /> 
+      )
+    }
     </div>
   );
 }
 
-export default App;
+const AppWrapper = () => {
+  return(
+    <AppProvider>
+      <App />
+    </AppProvider>
+  )
+}
+
+export default AppWrapper;
