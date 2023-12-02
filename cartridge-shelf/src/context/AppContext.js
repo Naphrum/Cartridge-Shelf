@@ -13,6 +13,37 @@ export const AppProvider = ({ children }) => {
             setUser(JSON.parse(cachedUser))
         }
     },[])
+    
+    useEffect(() => {
+      const getCollection = async () => {
+        const response = await axios.get(
+          `http://localhost:4001/v1/collection`
+        );
+        setCollection(response.data);
+      };
+    }, [user]);
+
+      const addGameToCollection = async (user_id, game_id) => {
+        const response = await axios.post(
+          `/v1/collection`, {
+            user_id,
+            game_id,
+          }
+        );
+        setCollection(response.data);
+      };
+    
+      const deleteGameFromCollection = async (user_id, game_id) => {
+        const response = await axios.post(
+          `/v1/collection`, {
+            user_id,
+            game_id,
+          }
+        );
+        setCollection(response.data);
+      };
+    
+
 
     const login = async (email, username, password) => {
         const response = await axios.post("/v1/login", {
@@ -40,7 +71,11 @@ export const AppProvider = ({ children }) => {
             value={{
                 user,
                 login,
-                logout
+                logout,
+                collection,
+                addGameToCollection,
+                deleteGameFromCollection,
+
             }}
         >
             {children}

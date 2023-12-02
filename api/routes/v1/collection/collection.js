@@ -1,6 +1,12 @@
 const express = require("express");
+const axios = require("axios");
+require("dotenv").config();
 
 const router = express.Router();
+
+router.get("/", async (req, res, next) => {
+
+})
 
 router.post("/", async (req, res, next) => {
   try {
@@ -16,19 +22,15 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-// router.delete("/:id", async (req, res, next) => {
-//   try {
-//     const db = req.app.get("db");
-//     const { id } = req.params;
-
-//     await db.games.destroy(id);
-//     // kill orphans
-//     await db.games.destroy({ game_id: id });
-
-//     res.sendStatus(200);
-//   } catch (err) {
-//     next(err);
-//   }
-// });
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const db = req.app.get("db");
+    const { id } = req.params;
+    await db.collection.destroy(id);
+    res.sendStatus(200);
+  } catch (err) {
+    next(err);
+  }
+});
 
 module.exports = router;

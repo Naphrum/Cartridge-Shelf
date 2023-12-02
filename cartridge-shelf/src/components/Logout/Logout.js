@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 
 const Logout = () => {
   const { logout } = useContext(AppContext);
-  return <Button variant="contained" onClick={logout}>Log Out</Button>;
+  return <Button variant="outline" onClick={logout}>Log Out</Button>;
 };
 
 export default Logout;
