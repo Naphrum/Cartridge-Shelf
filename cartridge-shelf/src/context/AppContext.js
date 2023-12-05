@@ -33,8 +33,18 @@ export const AppProvider = ({ children }) => {
         setCollection(response.data);
       };
     
+      const updateStarRating = async (id, user_star_rating) => {
+        const response = await axios.put(
+          `/v1/collection`, {
+            id,
+            user_star_rating,
+          }
+        );
+        setCollection(response.data);
+      }
+
       const deleteGameFromCollection = async (user_id, game_id) => {
-        const response = await axios.post(
+        const response = await axios.delete(
           `/v1/collection`, {
             user_id,
             game_id,
@@ -59,6 +69,7 @@ export const AppProvider = ({ children }) => {
           console.error("Login failed.");
         }
       };
+
     
     
     const logout = () => {
@@ -75,7 +86,7 @@ export const AppProvider = ({ children }) => {
                 collection,
                 addGameToCollection,
                 deleteGameFromCollection,
-
+                updateStarRating
             }}
         >
             {children}

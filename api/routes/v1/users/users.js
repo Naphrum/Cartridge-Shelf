@@ -50,7 +50,6 @@ router.get("/:id/collection", async (req, res, next) => {
       
       games.data[gameIndex].coverUrl = `images.igdb.com/igdb/image/upload/t_cover_big/${cover.image_id}.jpg`
     })
-    // console.log("GAMES:  ", games.data)
 
     games.data.forEach((game) => {
       const gameId = game.id;
@@ -58,7 +57,6 @@ router.get("/:id/collection", async (req, res, next) => {
       collection[gameIndex].game = game
     })
     
-    console.log("COLLECTION:  ", collection)
     res.json(collection);
   } catch (err) {
     next(err);

@@ -7,12 +7,12 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import StarRating from "../StarRating";
 import { Grid } from "@mui/material";
 
 const Collection = () => {
   const [userCollection, setUserCollection] = useState([]);
-  const [gamesInCollection, setGamesInCollection] = useState([]);
-  const { user, collection, deleteGameFromCollection } = useContext(AppContext);
+  const { user } = useContext(AppContext);
   useEffect(() => {
     axios
       .get(`/v1/users/${user.id}/collection`)
@@ -24,40 +24,43 @@ const Collection = () => {
       });
   }, []);
 
-  const removeGameFromUserCollection = async (gameId) =>{
-    console.log("GAME_ID:  ", gameId)
-    try{
-      axios
-      .delete(`/v1/collection/${gameId}`)
-    } catch (e) {
-      console.error(e)
+  const removeGameFromUserCollection = async (gameId) => {
+    try {
+      axios.delete(`/v1/collection/${gameId}`);
+    } catch (err) {
+      console.error(err);
     }
-  }
-
-  const deleteGame = async (game) => {
-    try{
-
-      const newGamelist = [...userCollection];
-      console.log("GAME:  ", game)
-      console.log(newGamelist)
-      const indexToRemove = newGamelist.findIndex(
-        vgm => vgm.game_id === game.id
-        );
-        await removeGameFromUserCollection(game.id)
-        newGamelist.splice(indexToRemove, 1);
-        setUserCollection(newGamelist);
-      } catch (e) {
-        console.error(e)
-      }
   };
 
-  const renderUserCollection = () => {
-    if (userCollection) {
-      return userCollection.map((collectionGame) => {
+  const handleStarRating = async (id, rating) => {
+    console.log("STAR_RATING:  ", rating);
+    try {
+      axios.put(`/v1/collection/${id}`, { user_star_rating: rating });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const deleteGame = async (game) => {
+    try {
+      await removeGameFromUserCollection(game.id);
+      setUserCollection((newGameList) => {
+        const indexToRemove = newGameList.findIndex(
+          (vgm) => vgm.id === game.id
+        );
+        newGameList.splice(indexToRemove, 1);
+        return [...newGameList]
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <Grid container spacing={6}>
+      <>{userCollection.map((collectionGame) => {
         return (
-          <Grid
-          key={collectionGame.id}
-          item xs={3}>
+          <Grid key={collectionGame.id} item xs={3}>
             <Card
               sx={{
                 maxWidth: 300,
@@ -72,20 +75,23 @@ const Collection = () => {
                   image={`http://${collectionGame.game.coverUrl}`}
                   title={`${collectionGame.game.name}`}
                 />
-                <IconButton onClick={() => {deleteGame(collectionGame)}}>
+                <StarRating
+                  handleChange={handleStarRating}
+                  id={collectionGame.id}
+                  rating={collectionGame.user_star_rating}
+                />
+                <IconButton
+                  onClick={() => {
+                    deleteGame(collectionGame);
+                  }}
+                >
                   <DeleteForeverIcon />
                 </IconButton>
               </CardContent>
             </Card>
           </Grid>
         );
-      });
-    }
-  };
-
-  return (
-    <Grid container spacing={6}>
-      <>{renderUserCollection()}</>
+      })}</>
     </Grid>
   );
 };
