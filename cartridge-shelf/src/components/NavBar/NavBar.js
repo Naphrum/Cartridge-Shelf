@@ -1,24 +1,43 @@
 import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import Logout from "../Logout/Logout";
-import { AppBar, Box, OutlinedInput, Toolbar, Typography, Button } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Button,
+} from "@mui/material";
 
 const NavBar = () => {
   return (
     <Box
       className="navbar"
-      xs={{
+      sx={{
         display: "flex",
+        justifyContent: "space-between",
+        marginBottom: "70px"
+
       }}
     >
-      <AppBar >
+      <AppBar>
         <Toolbar>
-          <Typography>Cartidge Shelf</Typography>
-          <OutlinedInput placeholder="Search Games..."></OutlinedInput>
-          <Link to="/collection">
-            <Button color="#FFFFF" variant="outline">Collection</Button>
+          <Link
+            to="/"
+            style={{
+              color: "white",
+              textDecoration: "none",
+            }}
+          >
+            CARTRIDGE SHELF
           </Link>
-          <Logout />
+          <Box>
+            <Link to="/collection">
+              <Button color="#FFFFF" variant="outline">
+                Collection
+              </Button>
+            </Link>
+            <Logout />
+          </Box>
         </Toolbar>
       </AppBar>
     </Box>

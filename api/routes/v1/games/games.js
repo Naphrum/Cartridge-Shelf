@@ -42,7 +42,7 @@ router.get("/", async (req, res, next) => {
     const gameIndex = result.data.findIndex((game) => gameId === game.id)
     console.log(gameIndex)
 
-    result.data[gameIndex].coverUrl = `images.igdb.com/igdb/image/upload/t_cover_big/${cover.image_id}.jpg`
+    result.data[gameIndex].coverUrl = `images.igdb.com/igdb/image/upload/t_cover_big/${cover.image_id}.png`
   })
 
   res.json(result.data);
